@@ -1,0 +1,33 @@
+CountryID,CountryAbbr,Country
+0,1,BE,Belgium
+1,2,DK,Denmark
+2,3,GE,Germany
+3,4,GR,Greece
+4,5,ESP,Spain
+5,6,FR,France
+6,7,IRL,Ireland
+7,8,IT,Italy
+8,10,NL,Netherlands
+9,11,UK,United Kingdom
+10,12,POR,Portugal
+11,13,AUS,Austria
+12,14,FIN,Finland
+13,16,SV,Sweden
+14,20,BUL,Bulgaria
+15,21,CZ,Czech Republic
+16,22,EST,Estonia
+17,23,HUN,Hungary
+18,24,LAT,Latvia
+19,25,LITH,Lithuania
+20,26,POL,Poland
+21,27,ROM,Romania
+22,28,SLO,Slovakia
+23,29,SLE,Slovenia
+24,31,CRO,Croatia
+25,34,TUR,Turkey
+26,35,NOR,Norway
+27,36,SWI,Switzerland
+28,37,MAL,Malta
+29,38,LUX,Luxembourg
+30,40,CYP,Cyprus
+31,45,ICE,Iceland
