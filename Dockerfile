@@ -11,7 +11,5 @@ USER airflow
 
 # Install python dependecies 
 COPY requirements.txt ./requirements.txt
-RUN pip3 config --user set global.index-url https://p-nexus-3.development.nl.eu.abnamro.com:8443/repository/python-group/simple
-RUN pip3 config --user set global.trusted-host p-nexus-3.development.nl.eu.abnamro.com
 RUN pip3 install --user --upgrade pip
 RUN pip3 install --no-cache-dir --user -r requirements.txt
