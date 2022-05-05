@@ -6,7 +6,7 @@ from airflow.utils.decorators import apply_defaults
 
 
 class WritePandasDfToSQL(SqliteOperator):
-    """ "
+    """
     A custom operator to read csv files and put df into sqlite db.
     :param Path file_path: file or uri
     :param String destination_table: destination_table
