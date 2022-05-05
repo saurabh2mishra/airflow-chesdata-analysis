@@ -118,7 +118,7 @@ task_extract_country_abbr = PythonOperator(
     python_callable=extract._generate_country_abbr_and_party,
     op_kwargs={
         "path": config._chescodebook_path,
-        "table_name": "country_abbrev",
+        "table_name": "country_abbr",
     },
     dag=dag,
 )
