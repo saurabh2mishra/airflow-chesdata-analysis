@@ -1,5 +1,5 @@
 apache-airflow==2.2.4
-pandas==1.4.0
+pandas
 numpy
 tabula-py
 sqlalchemy
