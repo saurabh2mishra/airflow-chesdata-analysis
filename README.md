@@ -1,21 +1,95 @@
-# Airflow Starter 🚀
-We will use docker to setup airflow, and to experiment ETL and visualization. I have chosen Docker for it's simplicity. Setting up Airflow in normal way could be tricky. If you are willing to experiment with normal setup then feel free to do so. 
+# Airflow Theory 🚀
 
-Docker set up link can be found here [Repalce the link with righ URL](link)
+[Airflow](https://airflow.apache.org/) is a batch-oriented framework for creating data pipelines.
 
-## Starting dokcer airflow project
+It uses [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) to create data processing networks or pipelines.
+
+DAG stands for -> Direct Acyclic Graph. Meaning it flows in one direction. You can't come back to same point.
+
+For Data prcoessing we can create our simplest DAG like this
+
+`read-data-from-api --> write-to-storage` 
+
+where arrow `-->` represent dependencies which means on what basis next action will be triggered.
+
+## Ok, so why should we use Airflow?
+
+- If you like *`Everything As Code`* and **everything** mean everything including your configurations 😃
+. EaC helps to create any complex level pipeline to solve the problem.
+- If you like open source because mostly everything you can get as as inbuilt operator or executors.
+- `Backfilling` features. It enables you to reprocess historical data.
+
+## And, why shouldn't you use Airflow?
+- If you want to build a streaming data pipeline. 
+
+
+# Airflow Architecture
+
+So, as of know we have atleast an idea that Airflow helps to create the data pipelines. Interanlly, Airflow installs below components to facilitate execution of pipelines. These componenets are 
+
+- `Scheduler`, which parses DAGS, check their schedule interval, and starts scheduling DAGs tasks fir execution by pasing them to airflow workers.
+- `Workers`, Responsible for doing real work. It picks up tasks and excute them.
+- `Websever`, which presents a handy user interface to inspect, trigger and debug the behaviour of DAGs and tasks.
+- `DAG directory`, to keep all dag in place to be read by scheduler and executor.
+- `Metadata Database`, used by scheduler, executor, and webseerver to store state, so that all of them can communicate and take decisions.
+
+![Airflow Architecture](/imgs/airflow_arch.png)
+
+The heart of Airflow is arguably the scheduler, as this is where most of the magic happens that determines when and how your pipelines are executed. At a high level, the scheduler runs through the following steps.
+
+1. Once users have written their workflows as DAGs, the files containing these DAGs are read by the scheduler to extract the corresponding tasks, dependencies, and schedule interval of each DAG.
+
+2. For each DAG, the scheduler then checks whether the schedule interval for the DAG has passed since the last time it was read. If so, the tasks in the DAG are scheduled for execution.
+
+3. For each scheduled task, the scheduler then checks whether the dependencies (= upstream tasks) of the task have been completed. If so, the task is added to the execution queue.
+
+4. The scheduler waits for several moments before starting a new loop by jumping back to step 1.
+
+For now, ite enough on architecture. Let's move to next part.
+
+# Installing Airflow
+
+Airflow provides many options for installations. You can read all the options in the [official airflow documentation](https://airflow.apache.org/docs/apache-airflow/stable/installation/index.html). and then decide which options suit your need. However, to keep it simple, I will go ahead with Docker
+
+Installing Airflow with Docker is simple and intutive which helps us to understand typical features and working of Airflow. Below are the pre-requistes for running Airflow in Docker.
+- Docker Community Edition installed in your machine. Check this link for [Windows](https://docs.docker.com/desktop/windows/) and [Mac](https://docs.docker.com/desktop/mac/). I followed this [blog](https://adamtheautomator.com/docker-for-mac/) for docker installation on Mac
+- [Docker Compose](https://docs.docker.com/compose/install/) installation.
+
+*Coveats* - You need atleast **4GB memory** for Docker engine.
+
+![Docker memory setting](/imgs/docker_memory_settings.png)
+
+# Installation Steps
+1.  Create a file name as airflow_runner.sh. Copy below commands in the script. 
+
+```
+docker run --rm "debian:buster-slim" bash -c 'numfmt --to iec $(echo $(($(getconf _PHYS_PAGES) * $(getconf PAGE_SIZE))))'
+
+curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.2.4/docker-compose.yaml'
+
+mkdir -p ./dags ./logs ./plugins
+
+echo -e "AIRFLOW_UID=$(id -u)" > .env
+```
+2. Provide execute access to file. `chmod +x airflow_runner.sh`
+3. Run `source airflow_runner.sh`
+4. Once, the above steps get completed successfully, then run `docker-compose up airflow-init` to initialize database.
+
+After initialization is complete, you should see a message like below.
+```
+airflow-init_1       | Upgrades done
+airflow-init_1       | Admin user airflow created
+airflow-init_1       | 2.3.0
+start_airflow-init_1 exited with code 0
+```
+
+Now, we are ready to go for the next step.
+
+## Starting Docker Airflow project
 
 `docker-compose up`
 
-`./airflow.sh info`
-
-You can also use bash as parameter to enter interactive bash shell in the container or python to enter python container.
-
-`./airflow.sh bash`
-
-`./airflow.sh python`
-
-The webserver is available at: http://localhost:8080. The default account has the login airflow and the password airflow.
+After few seconds, when everything is up then the webserver is available at: http://localhost:8080. The default account has the login `airflow` and the password `airflow`.
 
 ## Cleaning up
 
@@ -23,7 +97,12 @@ To stop and delete containers, delete volumes with database data and download im
 
 `docker-compose down --volumes --rmi all`
 
+
 # Fundamentals of Airflow 
+
+We have comeup a long way and thanks for following till now. We have installed Airflow and know at high level what it stands for ;) but we are yet to discover how to build our pipeline. We roughly touch few more concepts and then we will create a full fledged project using these concepts.
+
+
 
 Satisfied principles (not listed are not applicable):
 
