@@ -55,7 +55,7 @@ and our visualization will look like this.
 
 ![visualization](/imgs/visualization.png)
 
-# Prereqisites 
+# Prerequisites
 ```diff
 - Airflow must be installed and working in your machine.
 ```
@@ -65,11 +65,6 @@ Check it out here for [installation guide](https://github.com/saurabh2mishra/air
 
 Before we start writing our DAG and scripts we must follow the standard folder strcuture to organize
 our code base. This is the stanard way to organize our code base.
-
-Folder structures are followed from this [stackoverflow link](https://stackoverflow.com/questions/44424473/airflow-structure-organization-of-dags-and-tasks).
-This is what developers suggest and follow, but it's not mandatory to stick with the same. 
-But the idea is to have an organised way to keep the dag and scripts followed and understandable by others.
-
 
 ```tree
 ───dags
@@ -104,6 +99,9 @@ But the idea is to have an organised way to keep the dag and scripts followed an
     └───project_2
         files.csv
 ```
+Folder structures are followed from this [stackoverflow link](https://stackoverflow.com/questions/44424473/airflow-structure-organization-of-dags-and-tasks).
+This is what developers suggest and follow, but it's not mandatory to stick with the same. 
+But the idea is to have an organised way to keep the dag and scripts followed and understandable by others.
 
 
 Code snippets are below
