@@ -104,6 +104,23 @@ This is what developers suggest and follow, but it's not mandatory to stick with
 But the idea is to have an organised way to keep the dag and scripts followed and understandable by others.
 
 
+## DAG Design concerns
+
+Looking at the above DAG design for this project, One might disagree with the workflow and ask
+
+*Why have we organised our tasks in this way? 
+Why not use BashOperator to call our python code directly, 
+and why not just call the main driver program, which executes 
+all these tasks underhood, and we patch them with a single task?
+Or why not split them into other tasks?*
+
+These are all valid questions to ask while developing a workflow,
+but the truth is, there’s no right or wrong answer. 
+There are several points to consider, e.g. idempotency, atomicity, a logical flow, and then it's our choice to design it as per our need.
+
+
+## Let's understand the project
+
 Code snippets are below
 
 ```python
@@ -126,14 +143,3 @@ for file, uri in enumerate(files_uris):
     
     chain(start_operator, task_download_data, end_download_operators)
 ```
-
-Why have we organised our tasks in this way, you might ask? 
-Why not use BashOperator to call our python code directly, 
-and why not just call the main driver program, which executes 
-all these tasks underhood and we patch them with single task?
-Or why not split them into other tasks?
-These are all valid questions to ask while developing a workflow,
-but the truth is, there’s no right or wrong answer. 
-There are several points to consider, e.g. idempotency, atomicity, a logical flow, and then it's our choice to design it as per our need.
-
-
