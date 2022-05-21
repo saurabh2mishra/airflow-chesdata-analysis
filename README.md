@@ -55,13 +55,13 @@ and our visualization will look like this.
 
 ![visualization](/imgs/visualization.png)
 
-# Prerequisites
+## **Prerequisites**
 ```diff
 - Airflow must be installed and working in your machine.
 ```
 Check it out here for [installation guide](https://github.com/saurabh2mishra/airflow-notes#installing-airflow)
 
-# Airflow project strcuture.
+## **Airflow project strcuture.**
 
 Before we start writing our DAG and scripts we must follow the standard folder strcuture to organize
 our code base. This is the stanard way to organize our code base.
@@ -104,7 +104,7 @@ This is what developers suggest and follow, but it's not mandatory to stick with
 But the idea is to have an organised way to keep the dag and scripts followed and understandable by others.
 
 
-## DAG Design concerns
+## **DAG Design concerns**
 
 Looking at the above DAG design for this project, One might disagree with the workflow and ask
 
