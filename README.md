@@ -2,7 +2,7 @@
 
 ## **Project Description**
 
-The Chapel Hill expert surveys estimate party positioning on European integration, ideology and policy issues for national parties in various European countries. 
+The Chapel Hill expert surveys estimates party positioning on European integration, ideology and policy issues for national parties in various European countries. 
 
 32 EU countries and 277 political parties' data were collected to show a trend from 1999 to 2019. Chapel hill expert survey(CHES) is the longest-running and most extensive expert survey on political parties in Europe.
 
@@ -38,22 +38,6 @@ including all EU member states.
     And then, for each country and their respective political parties, we need to find out the orientation on the scale of 1 to 7 to show how they think on this matter?
 
     42 such questions exist in this questionnaire which we need to answer.
-
-## **Solution Description**
-
-We now understand the project at a high level that we need to build a report on the questionnaire, and we have few datasets. There are many ways to solve this problem, but here we are more interested in solving it in an Airflow way. 
-If you want to check that how can we solve this problem without airflow, then refer to this [repo](python-repo), which solves the problem in the same way in plain python (no airflow)
-
-So, to start with the solution, we have to follow a typical ETL workflow (extract-transform-load). Once all required datasets are loaded and merged correctly, we can build our report on top of that. Solving it in airflow helps us
-to leverage several inbuilt features such as logging, tracking, workflow management etc. 
-
-The created dataflow will look like this 
-
-![chapel-hill-survey-dag-graph](/imgs/project_dag_graph.png)
-
-and our visualization will look like this.
-
-![visualization](/imgs/visualization.png)
 
 ## **Prerequisites**
 ```diff
@@ -99,47 +83,48 @@ our code base. This is the stanard way to organize our code base.
     └───project_2
         files.csv
 ```
-Folder structures are followed from this [stackoverflow link](https://stackoverflow.com/questions/44424473/airflow-structure-organization-of-dags-and-tasks).
+Folder structures are followed from this [stackoverflow](https://stackoverflow.com/questions/44424473/airflow-structure-organization-of-dags-and-tasks).
 This is what developers suggest and follow, but it's not mandatory to stick with the same. 
 But the idea is to have an organised way to keep the dag and scripts followed and understandable by others.
 
+## **Solution Description**
 
-## **DAG Design concerns**
+We now understand the project at a high level that we need to build a report on the questionnaire, and we have few datasets. There are many ways to solve this problem, but here we are more interested in solving it in an Airflow way. 
+If you want to check that how can we solve this problem without airflow, then refer to this [repo](python-repo), which solves the problem in the same way in plain python (no airflow)
 
-Looking at the above DAG design for this project, One might disagree with the workflow and ask
-
-*Why have we organised our tasks in this way? 
-Why not use BashOperator to call our python code directly, 
-and why not just call the main driver program, which executes 
-all these tasks underhood, and we patch them with a single task?
-Or why not split them into other tasks?*
-
-These are all valid questions to ask while developing a workflow,
-but the truth is, there’s no right or wrong answer. 
-There are several points to consider, e.g. idempotency, atomicity, a logical flow, and then it's our choice to design it as per our need.
+So, to start with the solution, we have to follow a typical ETL workflow (extract-transform-load). 
+Once all required datasets are loaded and merged correctly, we can build our report on top of that.
+Solving it in airflow helps us to leverage several inbuilt features such as logging, tracking, 
+workflow management etc. 
 
 
-## Let's understand the project
+## Let's outline the basic steps to create dataset for visualization
 
-Code snippets are below
+1- Get the all 3 datasets. In config file you can see the download link. Important design aspect here is we
+can download all these files in parallel. We will keep it in data folder.
 
-```python
-files_uris = {"2019_CHES_codebook.pdf" : config.codebook_uri,
-        "CHES2019V3.csv" : config.chesdata_uri, 
-        "questionnaire.pdf" :config.questionnaire_uri
-        }
+2- We need to persist the dataset in SQL DB. Here I have used sqlite database but feel free to choose any
+other db as per your choice. So, at this stage first we need to create connection to create tables so that 
+extracted data from files can be loaded.
 
-for file, uri in enumerate(files_uris):
-    file_name = file.split(":")[0
-    task_download_data = PythonOperator(
-        task_id=f"download_{file_name}",
-        python_callable=download.download_files,
-        op_kwargs={"uri": uri, "file_name": file_name},
-        dag = dag
-    )
+3- Time to extract the data and write them in sqlite tables. Once again all write action can be make parallel.
 
-    # parallelization of all download tasks.
-    # This also can be written as start_operator >> task_download_data >> end_download_operators
-    
-    chain(start_operator, task_download_data, end_download_operators)
-```
+4- Data is extracted and now it's time for transformation. We will apply transformation to forward fill country information 
+for one of the dataset.
+
+5- At this stage, all datasets are clean, and transformed. We will merged them to create a flat file for our
+visualization query.
+
+And here ends the Airflow activities. We have created an ETL flow from end to end.
+
+The created dataflow will look like this 
+
+![chapel-hill-survey-dag-graph](/imgs/project_dag_graph.png)
+
+In the second problem, we will use streamlit to make our interactive visualization.
+
+and the visualization will be something like this.
+
+![visualization](/imgs/visualization.png)
+
+## What could we have done better or differently?
