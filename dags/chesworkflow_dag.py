@@ -96,17 +96,17 @@ task_extract_partydata = WritePandasDfToSQL(
     file_path=config.party_file,
     sql_conn_id="sqlite_conn_id",
     destination_table="party",
-    database="db.chesdata",
+    database="/opt/airflow/data/db.chesdata",
     dag=dag,
 )
 
 # Transform party data.
 task_transform_ffill_party = PythonOperator(
     task_id="transform_ffill_party_data",
-    python_callable=transform.apply_transformation, 
+    python_callable=transform.apply_transformation,
     op_kwargs={
-        "table_name" : "party",
-        "column_name":"country_abbrev",
+        "table_name": "party",
+        "column_name": "country_abbrev",
         "apply_func": "ffill",
     },
     dag=dag,
@@ -142,19 +142,27 @@ end_execution = DummyOperator(
 # Structuring DAG
 
 # Download files execution
-start_operator >> task_download_chesdata >> end_download_operators
-start_operator >> task_download_codebook >> end_download_operators
-start_operator >> task_download_questionnaire >> end_download_operators
+(
+    start_operator
+    >> [task_download_chesdata, task_download_codebook, task_download_questionnaire]
+    >> end_download_operators
+)
+# start_operator >> task_download_codebook >> end_download_operators
+# start_operator >> task_download_questionnaire >> end_download_operators
 
 # Create Sql connection and create tables
 end_download_operators >> task_create_conn >> task_ddls
 
 # Extracting and staging into SQL
-task_ddls >> task_extract_chesdata >> end_extration_operators
-task_ddls >> task_extract_partydata >> end_extration_operators
-task_ddls >> task_extract_country_abbr >> end_extration_operators
+(
+    task_ddls
+    >> [task_extract_chesdata, task_extract_partydata, task_extract_country_abbr]
+    >> end_extration_operators
+)
+# task_ddls >> task_extract_partydata >> end_extration_operators
+# task_ddls >> task_extract_country_abbr >> end_extration_operators
 
-# Transform 
+# Transform
 end_extration_operators >> task_transform_ffill_party
 
 # Join all three datasets and dump into SQL

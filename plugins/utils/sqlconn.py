@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 import pandas as pd
 
 
-def get_sql_conn(db_uri="sqlite:///db.chesdata"):
+def get_sql_conn(db_uri="sqlite:////opt/airflow/data/db.chesdata"):
     """
     Accept db uri and returns connection for sql
     :param db_uri: databse uri
@@ -48,7 +48,8 @@ def write_to_sql(df, table_name):
 def create_airflow_sql_conn(
     conn_id="sqlite_conn_id",
     conn_type="sqlite",
-    host="db.chesdata",
+    host="/opt/airflow/data/db.chesdata",
+    schema="db.chesdata",
     login="airflow",
     pwd="airflow",
     desc="Connection to connect local db",
@@ -69,7 +70,7 @@ def create_airflow_sql_conn(
         host=host,
         login=login,
         password=pwd,
-        schema="db.chesdata",
+        schema=schema,
         description=desc,
     )
     session = settings.Session()

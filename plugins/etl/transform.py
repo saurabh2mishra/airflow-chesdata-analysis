@@ -2,7 +2,7 @@ import pandas as pd
 
 import utils.sqlconn as sqlconn
 
-def apply_transformation(table_name, column_name, apply_func="ffill", db_uri="sqlite:///db.chesdata"):
+def apply_transformation(table_name, column_name, apply_func="ffill", db_uri="sqlite:////opt/airflow/data/db.chesdata"):
     column_name=f"{column_name}"
     df = pd.read_sql_table(table_name, db_uri)
     if apply_func == "ffill":     

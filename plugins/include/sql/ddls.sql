@@ -4,4 +4,3 @@ CREATE TABLE IF NOT EXISTS party(
         party_abbrev TEXT,
         party_name TEXT,
         party_name_english TEXT);
-
