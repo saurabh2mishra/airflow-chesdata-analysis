@@ -51,41 +51,54 @@ Before we start writing our DAG and scripts we must follow the standard folder s
 our code base. This is the stanard way to organize our code base.
 
 ```tree
-───dags
-│   ├───common
-│   │   ├───hooks
-│   │   │       common_hook.py
-│   │   │
-│   │   ├───operators
-│   │   │       common_operator.py
-│   │   │       postgres_templated_operator.py
-│   │   │
-│   │   └───scripts
-│   │           scripts.py
-│   │
-│   ├───project_1
-│   │   │   dag_1.py
-│   │   │   dag_2.py
-│   │   │
-│   │   └───sql
-│   │        ddls.sql
-│   │
-│   └───project_2
-│       │   dag_1.py
-│       │   dag_2.py
-│       │
-│       └───sql
-│             ddls.sql
-│
-└───data
-    ├───project_1
-    │   files.csv
-    └───project_2
-        files.csv
+.
+├── dags
+│   └── chesworkflow_dag.py
+├── data
+│   ├── CHES2019V3.csv
+│   ├── country_abbr.csv
+│   └── party.csv
+├── plugins
+│   ├── __init__.py
+│   ├── conf
+│   │   ├── __init__.py
+│   │   └── config.py
+│   ├── etl
+│   │   ├── __init__.py
+│   │   ├── download_files.py
+│   │   ├── transform.py
+│   │   └── writetosql.py
+│   ├── include
+│   │   ├── __init__.py
+│   │   └── sql
+│   │       ├── chesdata_ddl.sql
+│   │       ├── create_merge_ds.sql
+│   │       ├── drop_merge_ds.sql
+│   │       └── party_ddl.sql
+│   ├── operators
+│   │   ├── __init__.py
+│   │   └── filestosql_operator.py
+│   └── utils
+│       ├── __init__.py
+│       ├── sqlconn.py
+│       └── vizquery.py
+|
+├── scripts
+│   ├── airflow.sh
+│   ├── plot.sh
+│   └── run_airflow.sh
+|
+└── visualization
+|    ├── __init__.py
+|    └── orientation_plot.py
+|
+├── Dockerfile
+├── README.md
+├── docker-compose.yaml
+├── requirements.txt
 ```
-Folder structures are followed from this [stackoverflow](https://stackoverflow.com/questions/44424473/airflow-structure-organization-of-dags-and-tasks).
-This is what developers suggest and follow, but it's not mandatory to stick with the same. 
-But the idea is to have an organised way to keep the dag and scripts followed and understandable by others.
+This is what suggested and followed by developers, but it's not mandatory.
+The basic idea is to keep the dag in organised way so that it is understandable by others.
 
 ## **Solution Description**
 
@@ -117,15 +130,19 @@ visualization query.
 
 And here ends the Airflow activities. We have created an ETL flow from end to end.
 
+DAG Execution 
+![dag-run](/imgs/dag_run.png)
+
 The created dataflow will look like this 
 
 ![chapel-hill-survey-dag-graph](/imgs/project_dag_graph.png)
 
 In the second problem, we will use streamlit to make our interactive visualization.
 
-and the visualization will be something like this.
+and the visualization.
 
 ![visualization](/imgs/visualization.png)
+
 
 ## How to replicate it in your machine. 
  - Clone the repo
@@ -135,7 +152,7 @@ and the visualization will be something like this.
     - If docker is up and running and you see airflow uri is coming on log then
     - type `localhost:8080` user and password is `airflow`
     - run chesworkflow_dag or tweak the cron timing ( currently it is 55 mins)
-    - Once the dag is successfull then run on your local machine `source plot.sh`
+    - Once the dag is successfull then run on your local machine `source scripts/plot.sh`
     - go to `http://localhost:8501` and see your plot for this exercise. 
 - To stop docker and remove all mount point, run `docker-compose down --volumes --rmi a`
 
@@ -143,6 +160,7 @@ and the visualization will be something like this.
 ## How can we improve it further?
 - Add some data quality checks
 - Add unit test 
+- Automation of pdf parsing (pdf parsing is very limited in this code)
 - Do comment for any other addition/suggestions.
 
 **Note** - I you want to extend it further please feel free to do so.
