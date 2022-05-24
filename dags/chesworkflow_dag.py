@@ -4,13 +4,13 @@ from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.sqlite.operators.sqlite import SqliteOperator
 
-import etl.writetosql as extract
-import etl.download_files as download
-import etl.transform as transform
-from operators.filestosql_operator import WritePandasDfToSQL
-import utils.sqlconn as sqlconn
+import plugins.etl.writetosql as extract
+import plugins.etl.download_files as download
+import plugins.etl.transform as transform
+from plugins.operators.filestosql_operator import WritePandasDfToSQL
+import plugins.utils.sqlconn as sqlconn
 
-from conf import config
+from plugins.conf import config
 
 
 default_args = {"start_date": datetime(2022, 4, 27), "owner": "Airflow"}
@@ -60,6 +60,7 @@ end_download_operators = DummyOperator(
 task_create_conn = PythonOperator(
     task_id="create_sqlite_conn",
     python_callable=sqlconn.create_airflow_sql_conn,
+    op_kwargs={"host": config.docker_db_path, "schema": config.db_schema},
     dag=dag,
 )
 
@@ -76,7 +77,11 @@ task_ddls = SqliteOperator(
 task_extract_chesdata = PythonOperator(
     task_id="extract_chesdata",
     python_callable=extract.get_and_staged_data,
-    op_kwargs={"path": config.chesdata_path, "table_name": "chesdata"},
+    op_kwargs={
+        "path": config.chesdata_path,
+        "table_name": "chesdata",
+        "db_uri": config.docker_db_uri,
+    },
     dag=dag,
 )
 
@@ -90,13 +95,12 @@ task_extract_chesdata = PythonOperator(
 #     dag=dag,
 # )
 
-
 task_extract_partydata = WritePandasDfToSQL(
     task_id="extract_partydata",
     file_path=config.party_file,
     sql_conn_id="sqlite_conn_id",
     destination_table="party",
-    database="/opt/airflow/data/db.chesdata",
+    database=config.docker_db_path,
     dag=dag,
 )
 
@@ -119,12 +123,21 @@ task_extract_country_abbr = PythonOperator(
     op_kwargs={
         "path": config._chescodebook_path,
         "table_name": "country_abbr",
+        "db_uri": config.docker_db_uri,
     },
     dag=dag,
 )
 
 end_extration_operators = DummyOperator(
     task_id="end_extration_task", trigger_rule="none_failed", dag=dag
+)
+
+# drop merged dataset
+task_drop_merged_ds = task_create_dataset_from_joined_data = SqliteOperator(
+    task_id="drop_merged_dataset",
+    sqlite_conn_id="sqlite_conn_id",
+    sql="drop_merge_ds.sql",
+    dag=dag,
 )
 
 # Create table by joining Datasets
@@ -147,8 +160,6 @@ end_execution = DummyOperator(
     >> [task_download_chesdata, task_download_codebook, task_download_questionnaire]
     >> end_download_operators
 )
-# start_operator >> task_download_codebook >> end_download_operators
-# start_operator >> task_download_questionnaire >> end_download_operators
 
 # Create Sql connection and create tables
 end_download_operators >> task_create_conn >> task_ddls
@@ -159,11 +170,14 @@ end_download_operators >> task_create_conn >> task_ddls
     >> [task_extract_chesdata, task_extract_partydata, task_extract_country_abbr]
     >> end_extration_operators
 )
-# task_ddls >> task_extract_partydata >> end_extration_operators
-# task_ddls >> task_extract_country_abbr >> end_extration_operators
 
 # Transform
 end_extration_operators >> task_transform_ffill_party
 
 # Join all three datasets and dump into SQL
-task_transform_ffill_party >> task_create_dataset_from_joined_data >> end_execution
+(
+    task_transform_ffill_party
+    >> task_drop_merged_ds
+    >> task_create_dataset_from_joined_data
+    >> end_execution
+)

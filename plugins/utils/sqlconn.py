@@ -5,27 +5,29 @@ from sqlalchemy import create_engine
 import pandas as pd
 
 
-def get_sql_conn(db_uri="sqlite:////opt/airflow/data/db.chesdata"):
+def get_sql_conn(db_uri):
     """
     Accept db uri and returns connection for sql
     :param db_uri: databse uri
     :return: SQL engine
     """
+    if db_uri is None:
+        raise ValueError("No database uri or path given.")
     engine = create_engine(db_uri, echo=False)
     return engine
 
 
-def read_from_sql(query):
+def read_from_sql(query, db_uri):
     """
     Read data from SQLite
     :param String query: SQL query
     :return: data from SQLite
     """
-    engine = get_sql_conn()
+    engine = get_sql_conn(db_uri)
     return engine.execute(query).fetchall()
 
 
-def write_to_sql(df, table_name):
+def write_to_sql(df, table_name, db_uri):
     """
     Write pandas df to SQLite
     :param pd.DataFrame df: Pandas dataframe
@@ -35,7 +37,7 @@ def write_to_sql(df, table_name):
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Require Pandas Dataframe.")
 
-    engine = get_sql_conn()
+    engine = get_sql_conn(db_uri)
     with engine.begin() as connection:
         df.to_sql(table_name, con=connection, index=False, if_exists="replace")
 
@@ -46,10 +48,10 @@ def write_to_sql(df, table_name):
 
 
 def create_airflow_sql_conn(
+    host,
+    schema,
     conn_id="sqlite_conn_id",
     conn_type="sqlite",
-    host="/opt/airflow/data/db.chesdata",
-    schema="db.chesdata",
     login="airflow",
     pwd="airflow",
     desc="Connection to connect local db",

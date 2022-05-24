@@ -5,7 +5,7 @@ import tabula
 import utils.sqlconn as sc
 
 
-def get_and_staged_data(path, table_name, file_type="csv"):
+def get_and_staged_data(path, table_name, db_uri, file_type="csv"):
     """
     Accept path and returns a pandas dataframe.
     :param Path path: database file or uri
@@ -21,15 +21,15 @@ def get_and_staged_data(path, table_name, file_type="csv"):
     if table_name == "party":
         data.loc[:, ["country_abbrev"]] = data.loc[:, ["country_abbrev"]].ffill()
 
-    sc.write_to_sql(data, table_name)
+    sc.write_to_sql(data, table_name, db_uri)
 
 
-def _generate_country_abbr_and_party(path, table_name):
+def _generate_country_abbr_and_party(path, table_name, db_uri):
     df = pd.read_csv(path)
-    sc.write_to_sql(df, table_name)
+    sc.write_to_sql(df, table_name, db_uri)
 
 
-def generate_country_abbr_and_party(path, table_name):
+def generate_country_abbr_and_party(path, table_name, db_uri):
     """
     This function takes list of dataframe generated from tabula pdf read and
     :param Path path: database file or uri
@@ -57,4 +57,4 @@ def generate_country_abbr_and_party(path, table_name):
     country_abbr = pd.concat([c1, c2], ignore_index=True)
     country_abbr["CountryID"] = country_abbr["CountryID"].apply(np.int64)
 
-    sc.write_to_sql(country_abbr, table_name)
+    sc.write_to_sql(country_abbr, table_name, db_uri)
