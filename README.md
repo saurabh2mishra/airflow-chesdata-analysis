@@ -137,10 +137,13 @@ and the visualization will be something like this.
     - run chesworkflow_dag or tweak the cron timing ( currently it is 55 mins)
     - Once the dag is successfull then run on your local machine `source plot.sh`
     - go to `http://localhost:8501` and see your plot for this exercise. 
+- To stop docker and remove all mount point, run `docker-compose down --volumes --rmi a`
 
 
-## How can we improve it further (next time :)) ?
+## How can we improve it further?
 - Add some data quality checks
 - Add unit test 
-- ??
+- Do comment for any other addition/suggestions.
+
+**Note** - I you want to extend it further please feel free to do so.
 
