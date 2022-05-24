@@ -64,12 +64,23 @@ task_create_conn = PythonOperator(
     dag=dag,
 )
 
-# Create table by joining Datasets
-task_ddls = SqliteOperator(
-    task_id="create_tables",
+# Create tables
+task_create_party_table = SqliteOperator(
+    task_id="create_party_table",
     sqlite_conn_id="sqlite_conn_id",
-    sql="ddls.sql",
+    sql="party_ddl.sql",
     dag=dag,
+)
+
+task_create_chesdata_table = SqliteOperator(
+    task_id="create_chesdata_table",
+    sqlite_conn_id="sqlite_conn_id",
+    sql="chesdata_ddl.sql",
+    dag=dag,
+)
+
+task_end_ddls = DummyOperator(
+    task_id="end_ddls", trigger_rule="none_failed", dag=dag
 )
 
 
@@ -86,7 +97,7 @@ task_extract_chesdata = PythonOperator(
 )
 
 # To show the use of custom operators, below snippet is commented. However
-# if you want to run below then comment the snippet which use WritePandasDfToSQL.
+# if you want to run below then uncomment below snippet and comment the WritePandasDfToSQL.
 
 # task_extract_partydata = PythonOperator(
 #     task_id="extract_partydata",
@@ -162,11 +173,11 @@ end_execution = DummyOperator(
 )
 
 # Create Sql connection and create tables
-end_download_operators >> task_create_conn >> task_ddls
+end_download_operators >> task_create_conn >> [task_create_chesdata_table, task_create_party_table] >> task_end_ddls
 
 # Extracting and staging into SQL
 (
-    task_ddls
+    task_end_ddls
     >> [task_extract_chesdata, task_extract_partydata, task_extract_country_abbr]
     >> end_extration_operators
 )

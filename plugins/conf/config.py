@@ -22,6 +22,7 @@ db_schema = "db.chesdata"
 docker_db_uri = "sqlite:////opt/airflow/data/db.chesdata"
 docker_db_path = "/opt/airflow/data/db.chesdata"
 mounted_local_db_uri = "sqlite:////Users/saurabhmishra/OfficeZone/airflow-chesdata-analysis/data/db.chesdata"
+
 # columns for visualizations - sd columns are removed.
 factcolumns = (
     "eu_position",
