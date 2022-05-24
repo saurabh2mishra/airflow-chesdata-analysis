@@ -4,9 +4,9 @@ from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.sqlite.operators.sqlite import SqliteOperator
 
-import operators.writetosql as extract
-import operators.download_files as download
-import operators.transform as transform
+import etl.writetosql as extract
+import etl.download_files as download
+import etl.transform as transform
 from operators.filestosql_operator import WritePandasDfToSQL
 import utils.sqlconn as sqlconn
 
@@ -20,7 +20,7 @@ dag = DAG(
     dag_id="chesdataworkflow",
     schedule_interval="*/55 * * * *",
     default_args=default_args,
-    template_searchpath="/opt/airflow/dags/include/sql",
+    template_searchpath="/opt/airflow/plugins/include/sql",
     catchup=False,
     tags=["chesdata"],
 )
