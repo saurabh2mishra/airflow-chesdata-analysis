@@ -1,0 +1,1 @@
+python -m streamlit run ../airflow-chesdata-analysis/visualization/orientation_plot.py
