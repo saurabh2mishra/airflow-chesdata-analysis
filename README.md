@@ -141,7 +141,7 @@ In the second problem, we will use streamlit to make our interactive visualizati
 
 and the visualization.
 
-![visualization](/imgs/visualization.png)
+![visualization](/imgs/viz.gif)
 
 
 ## How to replicate it in your machine. 
