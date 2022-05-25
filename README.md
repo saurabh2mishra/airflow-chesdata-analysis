@@ -1,3 +1,12 @@
+
+**Note** 
+
+❗ <sup> **If you are new to Airflow, I will ask to visit this link to checkout
+[fundamental of Airflow](https://github.com/saurabh2mishra/airflow-notes). Once you are done with that, then feel free to proceed further.**
+</sup>
+
+---
+
 # Chapel Hill expert surveys 2019 Data Analysis
 
 ## **Project Description**
@@ -163,5 +172,8 @@ and the visualization.
 - Automation of pdf parsing (pdf parsing is very limited in this code)
 - Do comment for any other addition/suggestions.
 
-**Note** - I you want to extend it further please feel free to do so.
+**Note** - If you want to extend it further please feel free to do so.
 
+---
+
+<sup> **Thank You for following this project** and being with me till end ❤️. If you like the project and work, please share it so that more people can get advantange of it. 🙏 </sup>
