@@ -1,7 +1,7 @@
 
 **Note** 
 
-❗ <sup> **If you are new to Airflow, I will ask to visit this link to checkout
+❗ <sup> **If you are new to Airflow, I will ask to read this first
 [fundamental of Airflow](https://github.com/saurabh2mishra/airflow-notes). Once you are done with that, then feel free to proceed further.**
 </sup>
 
