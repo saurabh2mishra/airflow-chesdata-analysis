@@ -101,6 +101,12 @@ our code base. This is the stanard way to organize our code base.
 |    ├── __init__.py
 |    └── orientation_plot.py
 |
+├── tests
+│   ├── dags
+│       ├── test_chesworkflow_dag.py
+│   └── __init__.py
+│   └── conftest.py
+|
 ├── Dockerfile
 ├── README.md
 ├── docker-compose.yaml
