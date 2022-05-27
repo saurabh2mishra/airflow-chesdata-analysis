@@ -107,17 +107,18 @@ our code base. This is the stanard way to organize our code base.
 ├── requirements.txt
 ```
 This is what suggested and followed by developers, but it's not mandatory.
+Check it out [here](https://stackoverflow.com/questions/44424473/airflow-structure-organization-of-dags-and-tasks).
 The basic idea is to keep the dag in organised way so that it is understandable by others.
 
 ## **Solution Description**
 
-We now understand the project at a high level that we need to build a report on the questionnaire, and we have few datasets. There are many ways to solve this problem, but here we are more interested in solving it in an Airflow way. 
-If you want to check that how can we solve this problem without airflow, then refer to this [repo](python-repo), which solves the problem in the same way in plain python (no airflow)
+We now understand the project at a high level, that we need to build a report for the questionnaires, and we have few datasets.
+There are many ways to solve this problem, but we are more interested in solving it in an Airflow way.
 
-So, to start with the solution, we have to follow a typical ETL workflow (extract-transform-load). 
+So, to start with the solution, we have to follow a typical ETL workflow (extract-transform-load).
 Once all required datasets are loaded and merged correctly, we can build our report on top of that.
-Solving it in airflow helps us to leverage several inbuilt features such as logging, tracking, 
-workflow management etc. 
+Solving it in airflow helps us leverage several inbuilt features such as logging, tracking,
+workflow management, etc.
 
 
 ## Let's outline the basic steps to create dataset for visualization
@@ -172,7 +173,14 @@ and the visualization.
 - Automation of pdf parsing (pdf parsing is very limited in this code)
 - Do comment for any other addition/suggestions.
 
+
+**Remarks** - Intentionally I have kept many variations within the code to show how we can pretty much use plain python functions or any custom
+Operator or inbuilt operator to get the job done. However, if you disagree with some of the implementations which might seem redundant, 
+feel free to make it work in your own way. To me, it was just experimentation to check what and how much I can leverage this workflow platform.
+
+
 **Note** - If you want to extend it further please feel free to do so.
+
 
 ---
 

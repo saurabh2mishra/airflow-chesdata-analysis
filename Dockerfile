@@ -6,7 +6,6 @@ RUN apt-get update -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* ;
 
-# Setting env variables to make import work (outside of the dag folder)
 ENV AIRFLOW_HOME=/opt/airflow
 ENV PYTHONPATH="${PYTHONPATH}:${AIRFLOW_HOME}"
 

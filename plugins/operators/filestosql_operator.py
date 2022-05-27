@@ -1,7 +1,6 @@
 import pandas as pd
 
 from airflow.providers.sqlite.hooks.sqlite import SqliteHook
-from airflow.providers.sqlite.operators.sqlite import SqliteOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.models import BaseOperator
 
@@ -13,7 +12,8 @@ class WritePandasDfToSQL(BaseOperator):
     :param String destination_table: destination_table
     """
 
-    ui_color = "#33DDFF"
+    ui_color = "#48D232"
+    ui_fgcolor ="#32D291"
 
     @apply_defaults
     def __init__(self, file_path, sql_conn_id, destination_table, database, **kwargs):
