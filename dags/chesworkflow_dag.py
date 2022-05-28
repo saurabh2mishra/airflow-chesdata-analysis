@@ -79,9 +79,7 @@ task_create_chesdata_table = SqliteOperator(
     dag=dag,
 )
 
-task_end_ddls = DummyOperator(
-    task_id="end_ddls", trigger_rule="none_failed", dag=dag
-)
+task_end_ddls = DummyOperator(task_id="end_ddls", trigger_rule="none_failed", dag=dag)
 
 
 # Extract tasks
@@ -173,7 +171,12 @@ end_execution = DummyOperator(
 )
 
 # Create Sql connection and create tables
-end_download_operators >> task_create_conn >> [task_create_chesdata_table, task_create_party_table] >> task_end_ddls
+(
+    end_download_operators
+    >> task_create_conn
+    >> [task_create_chesdata_table, task_create_party_table]
+    >> task_end_ddls
+)
 
 # Extracting and staging into SQL
 (

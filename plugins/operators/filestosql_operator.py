@@ -13,7 +13,7 @@ class WritePandasDfToSQL(BaseOperator):
     """
 
     ui_color = "#48D232"
-    ui_fgcolor ="#E52B50"
+    ui_fgcolor = "#E52B50"
 
     @apply_defaults
     def __init__(self, file_path, sql_conn_id, destination_table, database, **kwargs):
