@@ -39,9 +39,10 @@ def test_task_extract_partydata(test_dag, mocker):
 
 @pytest.mark.parametrize("dag_path", DAG_PATHS)
 def test_dag_integrity(dag_path):
-    """Import DAG files and check for a valid DAG instance."""
+    """Check a valid DAG instance."""
     dag_name = path.basename(dag_path)
     module = _import_file(dag_name, dag_path)
+    
     # Validate if there is at least 1 DAG object in the file
     dag_objects = [var for var in vars(module).values() if isinstance(var, models.DAG)]
     assert dag_objects
