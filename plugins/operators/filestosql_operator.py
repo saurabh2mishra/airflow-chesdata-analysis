@@ -6,14 +6,14 @@ from airflow.models import BaseOperator
 
 
 class WritePandasDfToSQL(BaseOperator):
-    """ "
+    """
     A custom operator to read csv files and put df into sqlite db.
     :param Path file_path: file or uri
     :param String destination_table: destination_table
     """
 
     ui_color = "#48D232"
-    ui_fgcolor ="#32D291"
+    ui_fgcolor ="#E52B50"
 
     @apply_defaults
     def __init__(self, file_path, sql_conn_id, destination_table, database, **kwargs):

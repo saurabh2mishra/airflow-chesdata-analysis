@@ -18,7 +18,7 @@ setup(
     version=verstr,
     name='csdanalysis',
     packages=find_packages(include=["src"]),
-    description='CHES2019 data analysis',
+    description='CHES2019 data analysis with Airflow',
     author='Saurabh Mishra',
     author_email='saurabh2.mishra@gmail.com',
     license='MIT'

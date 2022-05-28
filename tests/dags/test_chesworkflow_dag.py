@@ -1,16 +1,20 @@
 import glob
 from os import path
 import pytest
+from datetime import datetime
 
-from airflow import models as airflow_models
+from airflow import DAG
+from airflow import models 
 from plugins.operators.filestosql_operator import WritePandasDfToSQL
 
 DAG_PATHS = glob.glob(path.join(path.dirname(__file__), "..", "..", "dags", "*.py"))
 
 def test_task_extract_partydata(test_dag, mocker):
     """
-    Test to check task_extract_partydata task which uses a custom operator.
+    Custom Operator Test
     """
+
+    dag = DAG(dag_id="test", start_date=datetime.now())
     mock_hook = mocker.patch(
        "plugins.operators.filestosql_operator.SqliteHook",
        return_value=mocker.Mock()
@@ -22,11 +26,12 @@ def test_task_extract_partydata(test_dag, mocker):
             sql_conn_id="test",
             destination_table="test",
             database="db.test",
-            dag=test_dag
+            dag=dag
         )
-    task_write_df_to_sql.execute(context=None)
-    mock_hook.run.called
-    mock_hook.insert_rows.called
+    ti = models.TaskInstance(task=task_write_df_to_sql, run_id="test", execution_date=datetime.now())
+    task_write_df_to_sql.execute(ti.get_template_context())
+    mock_hook.run.assert_called()
+    mock_hook.insert_rows.assert_called()
     # pytest.helpers.run_task(task=task_write_df_to_sql, dag=test_dag)
 
 @pytest.mark.parametrize("dag_path", DAG_PATHS)
@@ -35,7 +40,7 @@ def test_dag_integrity(dag_path):
     dag_name = path.basename(dag_path)
     module = _import_file(dag_name, dag_path)
     # Validate if there is at least 1 DAG object in the file
-    dag_objects = [var for var in vars(module).values() if isinstance(var, airflow_models.DAG)]
+    dag_objects = [var for var in vars(module).values() if isinstance(var, models.DAG)]
     assert dag_objects
 
     # For every DAG object, test for cycles
