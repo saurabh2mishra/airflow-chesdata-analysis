@@ -175,7 +175,7 @@ and the visualization.
 
 ## How can we improve it further?
 - Add some data quality checks
-- Add unit test 
+- Add more test cases
 - Automation of pdf parsing (pdf parsing is very limited in this code)
 - Do comment for any other addition/suggestions.
 
