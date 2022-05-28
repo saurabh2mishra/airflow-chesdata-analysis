@@ -3,7 +3,6 @@
 
 ❗ <sup> ** This project was created to provide hands-on experience on Airflow and as a supplement to my blog.
 [fundamental of Airflow](https://github.com/saurabh2mishra/airflow-notes) and [medium](medium-link).
-
 If you are already familiar with Airflow and then please proceed otherwise, feel free to check those links.
 I have taken the freedom to write the code in a bit random way and the reason for the same is to explore Airflow features and to check the integration of plain python code in the workflow. And there are certainly many ways to replicate the same project using the same tool. However, if you have a better idea, feel free to extend it.
 </sup>
