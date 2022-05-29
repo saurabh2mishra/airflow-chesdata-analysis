@@ -1,11 +1,11 @@
 
 **Note** 
 
-❗ <sup> **This project is created to provide hands-on experience on Airflow and as a supplement to my blog
-[fundamental of Airflow](https://github.com/saurabh2mishra/airflow-notes) and [medium](medium-link).
-If you are already familiar with Airflow then proceed further otherwise, please visit blog's link for the fundamental.
-I have taken the freedom to write the code in a bit random way and the reason for the same is to explore Airflow features and to check the integration of plain python code in the workflow. And there are certainly many ways to replicate the same project using the same tool. However, if you have a better idea, feel free to extend it.**
-</sup>
+❗<sup> **This project is created to provide 
+hands-on experience on Airflow and as a supplement to my blog 
+Fundamentals of Airflow ([github-link](https://github.com/saurabh2mishra/airflow-notes) and [medium](medium-link)). 
+If you are already familiar with Airflow then proceed further; otherwise, please visit the blog's link to read about Airflow and its
+basic.❗**</sup>
 
 ---
 
@@ -182,9 +182,7 @@ and the visualization.
 - Do comment for any other addition/suggestions.
 
 
-**Remarks** - Intentionally I have kept many variations within the code to show how we can pretty much use plain python functions or any custom
-Operator or inbuilt operator to get the job done. However, if you disagree with some of the implementations which might seem redundant, 
-feel free to make it work in your own way. To me, it was just experimentation to check what and how much I can leverage this workflow platform.
+<sup> **🔻Remarks** - Consciously I have kept many variations within the code to show how we can pretty much use plain python functions or any custom Operator or inbuilt operator to get the job done. However, if you disagree with some of the implementations which might seem redundant, feel free to make it work in your own way. To me, it was just experimentation to check what and how much I could leverage this workflow platform.</sup>
 
 
 **Note** - If you want to extend it further please feel free to do so.
@@ -192,4 +190,4 @@ feel free to make it work in your own way. To me, it was just experimentation to
 
 ---
 
-<sup> **Thank You for following this project** and being with me till end ❤️. If you like the project and work, please share it so that more people can get advantange of it. 🙏 </sup>
+<sup> **Thank You for following this project and being with me till end ❤️. If you like the project and work, please share it so that more people can get advantange of it. 🙏** </sup>
