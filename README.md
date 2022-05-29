@@ -3,7 +3,7 @@
 
 ❗<sup> **This project is created to provide 
 hands-on experience on Airflow and as a supplement to my blog 
-Fundamentals of Airflow ([github-link](https://github.com/saurabh2mishra/airflow-notes) and [medium](medium-link)). 
+Fundamentals of Airflow ([github-link](https://github.com/saurabh2mishra/airflow-notes) and [medium](https://medium.com/@saurabh2.mishra/orchestration-with-apache-airflow-a-beginners-guide-for-project-based-learning-77c6c31d6323)). 
 If you are already familiar with Airflow then proceed further; otherwise, please visit the blog's link to read about Airflow and its
 basic.❗**</sup>
 
